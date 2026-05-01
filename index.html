@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>現代学力評価検定・練習版</title>
+  <title>中３数学 練習問題（CBT版）</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- CSS -->
@@ -20,56 +20,102 @@
 </head>
 
 <body>
+  <!-- 画面上部ヘッダー（タイトルバー） -->
   <header class="header">
-    <div class="header-inner">
-      <h1 class="header-title">現代学力評価検定・練習版</h1>
+    <div class="header-left">
+      <span class="header-system">CBT 練習環境</span>
+      <span class="header-title">全国学力調査 中３数学（練習版）</span>
+    </div>
+    <div class="header-right">
+      <span class="header-info">受検者ID：000000</span>
     </div>
   </header>
 
-  <main id="app">
+  <!-- 全体レイアウト -->
+  <div class="layout">
 
-    <!-- ホーム画面 -->
-    <section id="home" class="panel">
-      <h2 class="panel-title">練習モード</h2>
+    <!-- 左側：問題一覧パネル -->
+    <nav class="sidebar">
+      <div class="sidebar-title">問題一覧</div>
+      <ul id="questionList" class="question-list">
+        <!-- JavaScript で 1〜9 などを自動生成してもよい -->
+        <li data-index="0" class="question-item active">1</li>
+        <li data-index="1" class="question-item">2</li>
+        <li data-index="2" class="question-item">3</li>
+        <li data-index="3" class="question-item">4</li>
+        <li data-index="4" class="question-item">5</li>
+        <li data-index="5" class="question-item">6</li>
+        <li data-index="6" class="question-item">7</li>
+        <li data-index="7" class="question-item">8</li>
+        <li data-index="8" class="question-item">9</li>
+      </ul>
+    </nav>
 
-      <p class="panel-description">
-        現代社会で求められる「読解」「情報処理」「データ読解」「論理的思考」を  
-        MEXCBT・L‑Gate に近い落ち着いたUIで練習できます。
-      </p>
+    <!-- 右側：問題表示エリア -->
+    <main class="main">
 
-      <button id="startBtn" class="btn-primary">練習を始める</button>
-    </section>
+      <!-- 上部：問題番号・分野など -->
+      <section class="main-header">
+        <div class="main-header-left">
+          <span id="questionNumber" class="main-question-number">第1問</span>
+          <span id="questionCategory" class="main-question-category">分野：―</span>
+        </div>
+        <div class="main-header-right">
+          <span class="main-timer">残り時間：--:--</span>
+        </div>
+      </section>
 
-    <!-- 問題画面 -->
-    <section id="quiz" class="panel hidden">
+      <!-- 中央：問題文＋図・本文エリア -->
+      <section class="main-body">
+        <div class="problem-area">
+          <!-- 問題文 -->
+          <div id="questionText" class="problem-text">
+            ここに問題文が表示されます。
+          </div>
 
-      <div class="question-meta">
-        <span id="questionNumber" class="meta-number"></span>
-        <span id="questionCategory" class="meta-category"></span>
-      </div>
+          <!-- 図や補足を入れたい場合のコンテナ（必要に応じて使う） -->
+          <div id="questionFigure" class="problem-figure">
+            <!-- 画像や図を入れる場合はここに -->
+          </div>
+        </div>
 
-      <p id="questionText" class="question-text"></p>
+        <!-- 解答エリア（選択肢 or 記述） -->
+        <aside class="answer-area">
+          <div class="answer-title">解答欄</div>
+          <div id="choices" class="choices-list">
+            <!-- app.js から選択肢を生成 -->
+          </div>
 
-      <div id="choices" class="choices-list"></div>
+          <!-- 記述式用のテキストボックスを使う場合（必要な問題だけ表示） -->
+          <div id="freeAnswerContainer" class="free-answer hidden">
+            <label for="freeAnswer">解答を入力：</label>
+            <textarea id="freeAnswer"></textarea>
+          </div>
+        </aside>
+      </section>
 
-      <button id="nextBtn" class="btn-primary hidden">次へ</button>
-    </section>
+      <!-- 下部：操作ボタン・ヒントなど -->
+      <section class="main-footer">
+        <div class="nav-buttons">
+          <button id="prevBtn" class="btn-sub">前の問題へ</button>
+          <button id="nextBtn" class="btn-primary">次の問題へ</button>
+        </div>
 
-    <!-- 結果画面 -->
-    <section id="result" class="panel hidden">
-      <h2 class="panel-title">結果</h2>
+        <div class="hint-area">
+          <div class="hint-title">操作のヒント</div>
+          <p class="hint-text">
+            左の「問題一覧」から解きたい問題を選ぶことができます。<br>
+            選択肢をクリックすると選択されます。記述式の問題では、解答欄に数や式、言葉を書きましょう。
+          </p>
+        </div>
+      </section>
 
-      <p id="scoreText" class="result-score"></p>
+    </main>
+  </div>
 
-      <!-- 分野別スコアは app.js がここに追加する -->
-
-      <button onclick="location.reload()" class="btn-primary">もう一度</button>
-    </section>
-
-  </main>
-
+  <!-- 画面下部フッター -->
   <footer class="footer">
-    <p>© 2026 日本教育研究推進機構（JERPA）</p>
+    <p>© 2026 日本教育研究推進機構（JERPA） / 本画面は練習用のCBTインターフェースです。</p>
   </footer>
 
   <!-- JavaScript -->
