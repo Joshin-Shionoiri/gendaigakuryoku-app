@@ -4,121 +4,515 @@
   <meta charset="UTF-8">
   <title>中３数学 練習問題（CBT版）</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css">
-
-  <!-- PWA manifest -->
-  <link rel="manifest" href="manifest.json">
-
-  <!-- Service Worker -->
-  <script>
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("sw.js");
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "YuGothic", "Meiryo", sans-serif;
+      background: #f3f5f9;
     }
-  </script>
+    .header {
+      background: #005b9f;
+      color: #fff;
+      padding: 8px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+    }
+    .header-system {
+      font-weight: 700;
+      margin-right: 12px;
+    }
+    .header-title {
+      font-weight: 500;
+    }
+    .layout {
+      display: flex;
+      height: calc(100vh - 80px);
+    }
+    .sidebar {
+      width: 120px;
+      background: #e4ebf5;
+      border-right: 1px solid #c5cfdd;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+    .sidebar-title {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .question-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .question-item {
+      background: #fff;
+      border: 1px solid #c5cfdd;
+      border-radius: 4px;
+      padding: 6px 0;
+      margin-bottom: 6px;
+      text-align: center;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .question-item.active {
+      background: #005b9f;
+      color: #fff;
+      font-weight: 700;
+    }
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 12px 16px;
+      box-sizing: border-box;
+    }
+    .main-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    .main-question-number {
+      font-weight: 700;
+      margin-right: 12px;
+    }
+    .main-question-category {
+      color: #555;
+    }
+    .main-body {
+      display: flex;
+      flex: 1;
+      gap: 12px;
+    }
+    .problem-area {
+      flex: 2;
+      background: #fff;
+      border: 1px solid #c5cfdd;
+      border-radius: 4px;
+      padding: 12px;
+      box-sizing: border-box;
+      overflow-y: auto;
+    }
+    .problem-text {
+      font-size: 15px;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    .problem-figure {
+      margin-top: 8px;
+      padding: 8px;
+      border-top: 1px dashed #c5cfdd;
+      font-size: 13px;
+      color: #444;
+    }
+    .answer-area {
+      flex: 1;
+      background: #fff;
+      border: 1px solid #c5cfdd;
+      border-radius: 4px;
+      padding: 10px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+    }
+    .answer-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .choices-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .choice {
+      border: 1px solid #c5cfdd;
+      border-radius: 4px;
+      padding: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      background: #f8fafc;
+    }
+    .choice.selected {
+      background: #005b9f;
+      color: #fff;
+      border-color: #005b9f;
+      font-weight: 700;
+    }
+    .free-answer {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 4px;
+    }
+    .free-answer textarea {
+      width: 100%;
+      height: 80px;
+      resize: vertical;
+      font-size: 14px;
+    }
+    .hidden {
+      display: none;
+    }
+    .main-footer {
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 13px;
+    }
+    .nav-buttons {
+      display: flex;
+      gap: 8px;
+    }
+    .btn-primary, .btn-sub {
+      padding: 6px 14px;
+      border-radius: 4px;
+      border: 1px solid #005b9f;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: #005b9f;
+      color: #fff;
+    }
+    .btn-sub {
+      background: #fff;
+      color: #005b9f;
+    }
+    .hint-area {
+      flex: 1;
+      background: #fff;
+      border: 1px solid #c5cfdd;
+      border-radius: 4px;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+    .hint-title {
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .footer {
+      height: 32px;
+      font-size: 11px;
+      color: #666;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-top: 1px solid #c5cfdd;
+      background: #f0f2f6;
+    }
+  </style>
 </head>
-
 <body>
-  <!-- 画面上部ヘッダー（タイトルバー） -->
   <header class="header">
-    <div class="header-left">
+    <div>
       <span class="header-system">CBT 練習環境</span>
-      <span class="header-title">全国学力調査 中３数学（練習版）</span>
+      <span class="header-title">中学校第3学年 数学 練習問題</span>
     </div>
-    <div class="header-right">
+    <div>
       <span class="header-info">受検者ID：000000</span>
     </div>
   </header>
 
-  <!-- 全体レイアウト -->
   <div class="layout">
-
-    <!-- 左側：問題一覧パネル -->
     <nav class="sidebar">
       <div class="sidebar-title">問題一覧</div>
-      <ul id="questionList" class="question-list">
-        <!-- JavaScript で 1〜9 などを自動生成してもよい -->
-        <li data-index="0" class="question-item active">1</li>
-        <li data-index="1" class="question-item">2</li>
-        <li data-index="2" class="question-item">3</li>
-        <li data-index="3" class="question-item">4</li>
-        <li data-index="4" class="question-item">5</li>
-        <li data-index="5" class="question-item">6</li>
-        <li data-index="6" class="question-item">7</li>
-        <li data-index="7" class="question-item">8</li>
-        <li data-index="8" class="question-item">9</li>
-      </ul>
+      <ul id="questionList" class="question-list"></ul>
     </nav>
 
-    <!-- 右側：問題表示エリア -->
     <main class="main">
-
-      <!-- 上部：問題番号・分野など -->
       <section class="main-header">
-        <div class="main-header-left">
+        <div>
           <span id="questionNumber" class="main-question-number">第1問</span>
           <span id="questionCategory" class="main-question-category">分野：―</span>
         </div>
         <div class="main-header-right">
-          <span class="main-timer">残り時間：--:--</span>
+          <span class="main-timer">残り時間：50:00（ダミー）</span>
         </div>
       </section>
 
-      <!-- 中央：問題文＋図・本文エリア -->
       <section class="main-body">
         <div class="problem-area">
-          <!-- 問題文 -->
-          <div id="questionText" class="problem-text">
-            ここに問題文が表示されます。
-          </div>
-
-          <!-- 図や補足を入れたい場合のコンテナ（必要に応じて使う） -->
-          <div id="questionFigure" class="problem-figure">
-            <!-- 画像や図を入れる場合はここに -->
-          </div>
+          <div id="questionText" class="problem-text"></div>
+          <div id="questionFigure" class="problem-figure"></div>
         </div>
 
-        <!-- 解答エリア（選択肢 or 記述） -->
         <aside class="answer-area">
           <div class="answer-title">解答欄</div>
-          <div id="choices" class="choices-list">
-            <!-- app.js から選択肢を生成 -->
-          </div>
-
-          <!-- 記述式用のテキストボックスを使う場合（必要な問題だけ表示） -->
+          <div id="choices" class="choices-list"></div>
           <div id="freeAnswerContainer" class="free-answer hidden">
-            <label for="freeAnswer">解答を入力：</label>
+            <label for="freeAnswer">解答を入力しなさい。</label>
             <textarea id="freeAnswer"></textarea>
           </div>
         </aside>
       </section>
 
-      <!-- 下部：操作ボタン・ヒントなど -->
       <section class="main-footer">
         <div class="nav-buttons">
           <button id="prevBtn" class="btn-sub">前の問題へ</button>
           <button id="nextBtn" class="btn-primary">次の問題へ</button>
         </div>
-
         <div class="hint-area">
           <div class="hint-title">操作のヒント</div>
           <p class="hint-text">
-            左の「問題一覧」から解きたい問題を選ぶことができます。<br>
-            選択肢をクリックすると選択されます。記述式の問題では、解答欄に数や式、言葉を書きましょう。
+            左の「問題一覧」から解きたい問題を選びなさい。<br>
+            選択肢がある問題では、選択肢をクリックして選びなさい。<br>
+            記述式の問題では、解答欄に数や式、言葉を入力しなさい。
           </p>
         </div>
       </section>
-
     </main>
   </div>
 
-  <!-- 画面下部フッター -->
   <footer class="footer">
-    <p>© 2026 日本教育研究推進機構（JERPA） / 本画面は練習用のCBTインターフェースです。</p>
+    © 2026 日本教育研究推進機構（JERPA） / 練習用CBTインターフェース
   </footer>
 
-  <!-- JavaScript -->
-  <script src="app.js"></script>
+  <script>
+    // 全問題（意味は同じ・命令口調・オリジナル表現）
+    const questions = [
+      {
+        id: 1,
+        category: "数と式",
+        type: "記述",
+        text: "ある日のA市では、最高気温が5℃、最低気温が−4℃であった。この日の最高気温と最低気温の差を求めなさい。",
+        choices: [],
+        answer: "9",
+        figure: null
+      },
+      {
+        id: 2,
+        category: "式の計算",
+        type: "記述",
+        text: "式 7x + 9 − 5x + 7x² + 2x の中から、7x と同じ種類の項をすべて書きなさい。",
+        choices: [],
+        answer: "7x と 2x",
+        figure: null
+      },
+      {
+        id: 3,
+        category: "図形",
+        type: "記述",
+        text: "四角形PQRSに対角線PRを引いた図がある。図中の角a〜角fのうち、2つの角の大きさが等しければ PS と QR が平行であるといえる。その2つの角を答えなさい。",
+        choices: [],
+        answer: "角b と 角e",
+        figure: "quad"
+      },
+      {
+        id: 4,
+        category: "関数",
+        type: "記述",
+        text: "y が x に反比例する関係を表す表がある。空欄に入る値を求めなさい。",
+        choices: [],
+        answer: "-9",
+        figure: "tableInverse"
+      },
+      {
+        id: 5,
+        category: "確率",
+        type: "記述",
+        text: "大小2つのさいころを同時に投げる。大きいさいころの目が6であり、小さいさいころの目が1である確率を求めなさい。ただし、どちらのさいころも1から6までの目の出方は同様に確からしいものとする。",
+        choices: [],
+        answer: "1/36",
+        figure: "dice"
+      },
+      {
+        id: 6,
+        category: "数と式",
+        type: "記述",
+        text: "1から9までの異なる2つの数を選び、手順に従って3けたの自然数AとBをつくる。手順にしたがってできたAとBについて、A + B の値が選んだ2数の和の111倍になることを説明しなさい。",
+        choices: [],
+        answer: "A + B は常に 111 ×（選んだ2数の和）になる。",
+        figure: "AB"
+      },
+      {
+        id: 7,
+        category: "比例",
+        type: "記述",
+        text: "動画の時間x秒とデータ量yMBの関係を表した表とグラフがある。調べた結果の表から、グラフの点Cの座標を書きなさい。",
+        choices: [],
+        answer: "(30, 60)",
+        figure: "movieGraph"
+      },
+      {
+        id: 8,
+        category: "作図・証明",
+        type: "記述",
+        text: "鋭角である∠XOYについて、手順にしたがって作図した∠AOBの大きさがaであるとき、∠POBの大きさをaを用いて表しなさい。",
+        choices: [],
+        answer: "2a",
+        figure: "angle"
+      },
+      {
+        id: 9,
+        category: "統計",
+        type: "記述",
+        text: "全校生徒300人の睡眠時間の度数分布表がある。4時間以上7時間未満の階級までの累積度数を求めなさい。",
+        choices: [],
+        answer: "90",
+        figure: "freqTable"
+      }
+    ];
+
+    let currentIndex = 0;
+    let selectedChoice = null;
+
+    const questionListEl = document.getElementById("questionList");
+    const questionNumberEl = document.getElementById("questionNumber");
+    const questionCategoryEl = document.getElementById("questionCategory");
+    const questionTextEl = document.getElementById("questionText");
+    const questionFigureEl = document.getElementById("questionFigure");
+    const choicesEl = document.getElementById("choices");
+    const freeAnswerContainer = document.getElementById("freeAnswerContainer");
+    const freeAnswerEl = document.getElementById("freeAnswer");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    function initQuestionList() {
+      questions.forEach((q, i) => {
+        const li = document.createElement("li");
+        li.textContent = q.id;
+        li.className = "question-item" + (i === 0 ? " active" : "");
+        li.dataset.index = i;
+        li.onclick = () => {
+          currentIndex = i;
+          updateActiveList();
+          renderQuestion();
+        };
+        questionListEl.appendChild(li);
+      });
+    }
+
+    function updateActiveList() {
+      document.querySelectorAll(".question-item").forEach(li => {
+        li.classList.toggle("active", Number(li.dataset.index) === currentIndex);
+      });
+    }
+
+    function renderFigure(q) {
+      // 図・表・グラフを簡易に再現する枠
+      if (!q.figure) {
+        questionFigureEl.textContent = "";
+        questionFigureEl.classList.add("hidden");
+        return;
+      }
+      questionFigureEl.classList.remove("hidden");
+
+      switch (q.figure) {
+        case "quad":
+          questionFigureEl.innerHTML = `
+          <strong>図：</strong> 四角形PQRSに対角線PRを引いた図をイメージしなさい。<br>
+          対角線の交点付近に角a〜角fが配置されているものとする。
+          `;
+          break;
+        case "tableInverse":
+          questionFigureEl.innerHTML = `
+          <strong>表：</strong> y が x に反比例する関係を表す表の一部を示す。<br>
+          x: …, -3, -2, -1, 0, 1, 2, …<br>
+          y: □, -6, -12, □, 12, 6, …
+          `;
+          break;
+        case "dice":
+          questionFigureEl.innerHTML = `
+          <strong>図：</strong> 大小2つのさいころを並べた図をイメージしなさい。<br>
+          それぞれ1〜6の目が同様に確からしく出るものとする。
+          `;
+          break;
+        case "AB":
+          questionFigureEl.innerHTML = `
+          <strong>説明：</strong> 選んだ2数の大きい方と小さい方を用いて、<br>
+          A：大きい方を百の位と一の位、小さい方を十の位とする。<br>
+          B：小さい方を百の位と一の位、大きい方を十の位とする。<br>
+          例：2と7を選んだとき、A=727、B=272 となる。
+          `;
+          break;
+        case "movieGraph":
+          questionFigureEl.innerHTML = `
+          <strong>表：</strong> x(秒)：0, 15, 30, 45, 60<br>
+          y(MB)：0, 29, 60, 89, 122<br>
+          <strong>グラフ：</strong> 原点Oから点A(15,29)、B(30,60)、C(45,89)、D(60,122)を結んだ折れ線をイメージしなさい。
+          `;
+          break;
+        case "angle":
+          questionFigureEl.innerHTML = `
+          <strong>図：</strong> 鋭角∠XOYがあり、辺OX上に点A、辺OY上に点Bをとる。<br>
+          ABを半径とする円や、OBを半径とする円を用いて点Pをとり、直線OPを引いた図をイメージしなさい。
+          `;
+          break;
+        case "freqTable":
+          questionFigureEl.innerHTML = `
+          <strong>度数分布表：</strong><br>
+          4〜5時間：1人<br>
+          5〜6時間：14人<br>
+          6〜7時間：75人<br>
+          7〜8時間：126人<br>
+          8〜9時間：62人<br>
+          9〜10時間：20人<br>
+          10〜11時間：2人<br>
+          合計：300人
+          `;
+          break;
+        default:
+          questionFigureEl.textContent = "";
+      }
+    }
+
+    function renderQuestion() {
+      const q = questions[currentIndex];
+      questionNumberEl.textContent = `第${q.id}問`;
+      questionCategoryEl.textContent = `分野：${q.category}`;
+      questionTextEl.textContent = q.text;
+
+      renderFigure(q);
+
+      choicesEl.innerHTML = "";
+      selectedChoice = null;
+
+      if (q.type === "選択" && q.choices.length > 0) {
+        freeAnswerContainer.classList.add("hidden");
+        q.choices.forEach((c, i) => {
+          const div = document.createElement("div");
+          div.className = "choice";
+          div.textContent = c;
+          div.onclick = () => {
+            document.querySelectorAll(".choice").forEach(ch => ch.classList.remove("selected"));
+            div.classList.add("selected");
+            selectedChoice = i;
+          };
+          choicesEl.appendChild(div);
+        });
+      } else {
+        // 記述式
+        freeAnswerContainer.classList.remove("hidden");
+      }
+    }
+
+    prevBtn.onclick = () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateActiveList();
+        renderQuestion();
+      }
+    };
+
+    nextBtn.onclick = () => {
+      if (currentIndex < questions.length - 1) {
+        currentIndex++;
+        updateActiveList();
+        renderQuestion();
+      }
+    };
+
+    // 初期化
+    initQuestionList();
+    renderQuestion();
+  </script>
 </body>
 </html>
