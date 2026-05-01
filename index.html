@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>現代学力評価検定・練習版</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="app">
+    <h1>現代学力評価検定・練習版</h1>
+    <button id="startBtn">練習を始める</button>
+
+    <div id="quiz" class="hidden">
+      <p id="questionText"></p>
+      <div id="choices"></div>
+      <button id="nextBtn" class="hidden">次へ</button>
+    </div>
+
+    <div id="result" class="hidden">
+      <h2>結果</h2>
+      <p id="scoreText"></p>
+      <button onclick="location.reload()">もう一度</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
