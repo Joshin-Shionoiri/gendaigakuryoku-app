@@ -4,24 +4,52 @@
   <meta charset="UTF-8">
   <title>現代学力評価検定・練習版</title>
   <link rel="stylesheet" href="style.css">
+
+  <!-- PWA manifest -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Service Worker -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js");
+    }
+  </script>
 </head>
+
 <body>
-
   <div id="app">
-    <h1>現代学力評価検定・練習版</h1>
-    <button id="startBtn">練習を始める</button>
 
-    <div id="quiz" class="hidden">
-      <p id="questionText"></p>
-      <div id="choices"></div>
-      <button id="nextBtn" class="hidden">次へ</button>
+    <!-- ホーム画面 -->
+    <div id="home" class="card">
+      <h1 class="title">現代学力評価検定<br>練習アプリ</h1>
+      <p class="subtitle">
+        現代社会で必要な読解力・情報処理力・論理的思考を<br>
+        カード形式で練習できます。
+      </p>
+      <button id="startBtn" class="main-btn">練習を始める</button>
     </div>
 
-    <div id="result" class="hidden">
-      <h2>結果</h2>
-      <p id="scoreText"></p>
-      <button onclick="location.reload()">もう一度</button>
+    <!-- 問題画面 -->
+    <div id="quiz" class="hidden card">
+      <div class="question-header">
+        <span id="questionNumber"></span>
+        <span id="questionCategory" class="category-tag"></span>
+      </div>
+
+      <p id="questionText" class="question-text"></p>
+
+      <div id="choices" class="choices-container"></div>
+
+      <button id="nextBtn" class="main-btn hidden">次へ</button>
     </div>
+
+    <!-- 結果画面 -->
+    <div id="result" class="hidden card">
+      <h2 class="title">結果</h2>
+      <p id="scoreText" class="result-score"></p>
+      <button onclick="location.reload()" class="main-btn">もう一度</button>
+    </div>
+
   </div>
 
   <script src="app.js"></script>
