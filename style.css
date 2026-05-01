@@ -1,0 +1,19 @@
+body {
+  font-family: sans-serif;
+  padding: 20px;
+}
+
+.hidden {
+  display: none;
+}
+
+.choice {
+  padding: 10px;
+  margin: 8px 0;
+  background: #eee;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.choice.selected {
+  background: #cce0ff;
+}
