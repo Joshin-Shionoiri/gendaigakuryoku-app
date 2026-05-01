@@ -20,47 +20,57 @@
 </head>
 
 <body>
-  <div id="app">
+  <header class="header">
+    <div class="header-inner">
+      <h1 class="header-title">現代学力評価検定・練習版</h1>
+    </div>
+  </header>
+
+  <main id="app">
 
     <!-- ホーム画面 -->
-    <div id="home" class="card">
-      <h1 class="title">現代学力評価検定<br>練習アプリ</h1>
+    <section id="home" class="panel">
+      <h2 class="panel-title">練習モード</h2>
 
-      <p class="subtitle">
-        読解・情報処理・データ読解・論理的思考を<br>
-        カード形式で練習できます。
+      <p class="panel-description">
+        現代社会で求められる「読解」「情報処理」「データ読解」「論理的思考」を  
+        MEXCBT・L‑Gate に近い落ち着いたUIで練習できます。
       </p>
 
-      <button id="startBtn" class="main-btn">練習を始める</button>
-    </div>
+      <button id="startBtn" class="btn-primary">練習を始める</button>
+    </section>
 
     <!-- 問題画面 -->
-    <div id="quiz" class="hidden card">
+    <section id="quiz" class="panel hidden">
 
-      <div class="question-header">
-        <span id="questionNumber"></span>
-        <span id="questionCategory" class="category-tag"></span>
+      <div class="question-meta">
+        <span id="questionNumber" class="meta-number"></span>
+        <span id="questionCategory" class="meta-category"></span>
       </div>
 
       <p id="questionText" class="question-text"></p>
 
-      <div id="choices" class="choices-container"></div>
+      <div id="choices" class="choices-list"></div>
 
-      <button id="nextBtn" class="main-btn hidden">次へ</button>
-    </div>
+      <button id="nextBtn" class="btn-primary hidden">次へ</button>
+    </section>
 
     <!-- 結果画面 -->
-    <div id="result" class="hidden card">
-      <h2 class="title">結果</h2>
+    <section id="result" class="panel hidden">
+      <h2 class="panel-title">結果</h2>
 
       <p id="scoreText" class="result-score"></p>
 
       <!-- 分野別スコアは app.js がここに追加する -->
 
-      <button onclick="location.reload()" class="main-btn">もう一度</button>
-    </div>
+      <button onclick="location.reload()" class="btn-primary">もう一度</button>
+    </section>
 
-  </div>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 日本教育研究推進機構（JERPA）</p>
+  </footer>
 
   <!-- JavaScript -->
   <script src="app.js"></script>
