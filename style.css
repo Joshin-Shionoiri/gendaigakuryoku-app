@@ -1,19 +1,130 @@
+/* 全体の基本設定 */
 body {
-  font-family: sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  background: #f5f7fb;
+  margin: 0;
   padding: 20px;
+  display: flex;
+  justify-content: center;
 }
 
+/* アプリ全体の幅 */
+#app {
+  width: 100%;
+  max-width: 600px;
+}
+
+/* カードUIの基本 */
+.card {
+  background: #ffffff;
+  padding: 24px;
+  margin-top: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  animation: fadeIn 0.3s ease;
+}
+
+/* タイトル */
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+/* サブタイトル */
+.subtitle {
+  font-size: 14px;
+  text-align: center;
+  color: #666;
+  margin-bottom: 24px;
+}
+
+/* メインボタン */
+.main-btn {
+  width: 100%;
+  padding: 14px;
+  background: #1e88e5;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: 0.2s;
+}
+
+.main-btn:hover {
+  background: #166fbe;
+}
+
+/* 非表示 */
 .hidden {
   display: none;
 }
 
-.choice {
-  padding: 10px;
-  margin: 8px 0;
-  background: #eee;
-  border-radius: 8px;
-  cursor: pointer;
+/* 問題ヘッダー（番号＋カテゴリ） */
+.question-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: #444;
 }
+
+/* カテゴリタグ */
+.category-tag {
+  background: #e3f2fd;
+  color: #1e88e5;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+/* 問題文 */
+.question-text {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* 選択肢コンテナ */
+.choices-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* 選択肢カード */
+.choice {
+  background: #f0f3fa;
+  padding: 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.2s;
+  border: 2px solid transparent;
+}
+
+.choice:hover {
+  background: #e6ebf5;
+}
+
+/* 選択されたカード */
 .choice.selected {
-  background: #cce0ff;
+  background: #d7e8ff;
+  border-color: #1e88e5;
+}
+
+/* 結果画面のスコア */
+.result-score {
+  font-size: 22px;
+  text-align: center;
+  margin: 20px 0;
+}
+
+/* フェードインアニメーション */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
